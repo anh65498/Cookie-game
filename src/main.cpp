@@ -19,12 +19,7 @@
 using namespace std;				//don't need to write std:: anymore
 									/** I changed the original size of the window from 800,600 to 1000, 800 */
 
-
-
 void resetCookie(sf::Sprite &cookieSprite, int numOfCookie);
-
-
-
 
 void update(sf::Sprite& charizardSprite, sf::Sprite &dgSprite, sf::RenderWindow &window, vector<sf::Sprite> &vectorDg, int &numOfDg,
 					int &score, vector<sf::Sprite> &vectorCookie, int numOfCookie, vector<sf::Sprite> &vectorPitchfork, int numPitchfork, int &LIVES) 
@@ -74,7 +69,7 @@ void update(sf::Sprite& charizardSprite, sf::Sprite &dgSprite, sf::RenderWindow 
 		vectorDg.push_back(dgSprite);	
 		vectorDg[numOfDg].setOrigin((charizardPosition.x) + 32.0, (charizardPosition.y) + 32.0 );
 		vectorDg[numOfDg].setPosition( (charizardPosition.x)+32.0, (charizardPosition.y)+ 32.0 );
-		numOfDg++;
+		
 	} 
 	
 	for (int counter = 0; counter < vectorDg.size(); counter++)
