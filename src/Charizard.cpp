@@ -3,7 +3,6 @@
 
 void charizardMove(sf::Sprite &charizardSprite, sf::Vector2f &charizardPosition)
 {
-
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 		charizardSprite.move(0, -5);
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))

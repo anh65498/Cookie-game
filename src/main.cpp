@@ -66,6 +66,7 @@ void update(sf::Sprite& charizardSprite, sf::Sprite &dgSprite, sf::RenderWindow 
 	//DG shooting
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) )
 	{
+		numOfDg++;
 		vectorDg.push_back(dgSprite);	
 		vectorDg[numOfDg].setOrigin((charizardPosition.x) + 32.0, (charizardPosition.y) + 32.0 );
 		vectorDg[numOfDg].setPosition( (charizardPosition.x)+32.0, (charizardPosition.y)+ 32.0 );
@@ -227,6 +228,7 @@ int main()
 	dgTexture.loadFromFile(resourcePath() + "assets/dglogo.png");
 	sf::Sprite dgSprite(dgTexture);
 	dgSprite.setScale(0.05, 0.05);
+
 	vector <sf::Sprite> vectorDg;
 	vectorDg.push_back(dgSprite);
 	int numOfDg = 0;
