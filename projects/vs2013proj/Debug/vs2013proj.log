@@ -1,0 +1,8 @@
+﻿Build started 11/20/2015 4:14:18 PM.
+     1>Project "C:\Users\Anh\Desktop\DG - Game project\bird-squad\projects\vs2013proj\vs2013proj.vcxproj" on node 2 (Build target(s)).
+     1>C:\Program Files\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.Cpp.Platform.targets(64,5): error MSB8020: The build tools for v140 (Platform Toolset = 'v140') cannot be found. To build using the v140 build tools, please install v140 build tools.  Alternatively, you may upgrade to the current Visual Studio tools by selecting the Project menu or right-click the solution, and then selecting "Upgrade Solution...".
+     1>Done Building Project "C:\Users\Anh\Desktop\DG - Game project\bird-squad\projects\vs2013proj\vs2013proj.vcxproj" (Build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:00.42
