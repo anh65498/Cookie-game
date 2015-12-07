@@ -98,7 +98,6 @@ void update(sf::Sprite& charizardSprite, sf::Sprite &dgSprite, sf::RenderWindow 
 			LIVES -= 1;
 		}
 	}
-
 }
 
 void draw(sf::RenderWindow& window, sf::Sprite& charizardSprite, vector<sf::Sprite> &vectorDg,
@@ -342,5 +341,6 @@ void resetCookie(sf::Sprite &cookieSprite, int numOfCookie)
 3) Remember draw() but forget to display      
 4) problem with string at howTo screen, can't seem to setposition for instruction2 although I can setPosition for other string. Turns out, I mistook intruction2.setPosition
 for instruction1.setPosition
+
 
 */
