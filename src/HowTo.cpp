@@ -34,7 +34,7 @@ void HowToScreen(sf::RenderWindow& window, GAME_STATE &state, int &LIVES)
 	instruction2.setColor(sf::Color::White);
 	instruction2.setPosition(200, 300);
 
-	sf::Text instruction3("Dodge the Pitchfork and the cookie", font);
+	sf::Text instruction3("Dodge the fireball and the cookie", font);
 	instruction3.setCharacterSize(50);
 	instruction3.setColor(sf::Color::White);
 	instruction3.setPosition(200, 350);

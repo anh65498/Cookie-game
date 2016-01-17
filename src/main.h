@@ -7,10 +7,9 @@
 enum GAME_STATE { OPENING_SCREEN, HOWTO_SCREEN, DURING_GAME, ENDING_GAME };				//definition		
 const int numOfCookie = 3;
 				
-const int numPitchfork = 3;
-const int WIDTHWINDOW = 800;
-const int LENGTHWINDOW = 600;
-
+const int numFire = 3;
+const int LENGTHWINDOW = 800;
+const int WIDTHWINDOW = 600;
 																			/* Charizard */
 
 #endif

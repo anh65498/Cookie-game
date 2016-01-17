@@ -21,8 +21,8 @@ using namespace std;				//don't need to write std:: anymore
 
 void resetCookie(sf::Sprite &cookieSprite, int numOfCookie);
 
-void update(sf::Sprite& charizardSprite, sf::Sprite &dgSprite, sf::RenderWindow &window, vector<sf::Sprite> &vectorDg, int &numOfDg,
-					int &score, vector<sf::Sprite> &vectorCookie, int numOfCookie, vector<sf::Sprite> &vectorPitchfork, int numPitchfork, int &LIVES) 
+void update(sf::Sprite& charizardSprite, sf::Sprite &dgSprite, sf::RenderWindow &window, sf::Event &event, vector<sf::Sprite> &vectorDg, int &numOfDg,
+					int &score, vector<sf::Sprite> &vectorCookie, int numOfCookie, vector<sf::Sprite> &vectorFire, int numFire, int &LIVES) 
 {
 	//move cookie and reset position
 	for (int counter = 0; counter < numOfCookie; counter++)
@@ -40,39 +40,41 @@ void update(sf::Sprite& charizardSprite, sf::Sprite &dgSprite, sf::RenderWindow 
 	
 	}
 
-	//Move pitchfork and reset position
-	for (int count = 0; count < numPitchfork; count++)
+	//Move fire and reset position
+	for (int count = 0; count < numFire; count++)
 	{
-		vectorPitchfork[count].move(0, 5);
-		sf::Vector2f posPitchfork;
-		posPitchfork = vectorPitchfork[count].getPosition();
+		vectorFire[count].move(0, 5);
+		sf::Vector2f posFire;
+		posFire = vectorFire[count].getPosition();
 				
-		//cout << "The position of pitchfork " << count + 1 << " : " << posPitchfork.x << "         " << posPitchfork.y << endl;
-		if (posPitchfork.y > 600)
+		//cout << "The position of Fire " << count + 1 << " : " << posFire.x << "         " << posPitchfork.y << endl;
+		if (posFire.y > 600)
 		{
-			vectorPitchfork[count].setPosition(rand() % 800, 0);
+			vectorFire[count].setPosition(rand() % 800, 0);
 		}
 	}
-		//check if any pitchfork collide (2 images on top of each other), then regenerate new pitchfork at new location
+		//check if any fire collide (2 images on top of each other), then regenerate new pitchfork at new location
 	
 	
 	
 	//Move charizard
 	sf::Vector2f charizardPosition;
-	
 	charizardMove(charizardSprite, charizardPosition);								//inside Charizard.h
 
 																		
 	//DG shooting
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) )
-	{
-		numOfDg++;
-		vectorDg.push_back(dgSprite);	
-		vectorDg[numOfDg].setOrigin((charizardPosition.x) + 32.0, (charizardPosition.y) + 32.0 );
-		vectorDg[numOfDg].setPosition( (charizardPosition.x)+32.0, (charizardPosition.y)+ 32.0 );
-		
-	} 
-	
+	window.setKeyRepeatEnabled(false);
+
+	while (window.pollEvent(event)) {
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+			numOfDg++;
+			vectorDg.push_back(dgSprite);
+			vectorDg[numOfDg].setOrigin((charizardPosition.x) + 32.0, (charizardPosition.y) + 32.0);
+			vectorDg[numOfDg].setPosition((charizardPosition.x) + 32.0, (charizardPosition.y) + 32.0);
+		}	
+	}
+
+
 	for (int counter = 0; counter < vectorDg.size(); counter++)
 		vectorDg[counter].move(5, 0); 
 	
@@ -89,12 +91,12 @@ void update(sf::Sprite& charizardSprite, sf::Sprite &dgSprite, sf::RenderWindow 
 		}
 	}
 
-	//if pitchforkSprite overlap with CharizardSprite, reset pitchforkSprite
-	for (int count = 0; count < numPitchfork; count++)
+	//if fireball overlap with Charizard, reset fireball
+	for (int count = 0; count < numFire; count++)
 	{
-		if (overlap(vectorPitchfork[count], charizardSprite))
+		if (overlap(vectorFire[count], charizardSprite))
 		{
-			vectorPitchfork[count].setPosition(rand() % (800 - 100), 100);
+			vectorFire[count].setPosition(rand() % (LENGTHWINDOW - 100), 100);
 			LIVES -= 1;
 		}
 	}
@@ -102,7 +104,7 @@ void update(sf::Sprite& charizardSprite, sf::Sprite &dgSprite, sf::RenderWindow 
 
 void draw(sf::RenderWindow& window, sf::Sprite& charizardSprite, vector<sf::Sprite> &vectorDg,
 		sf::Sprite &ball1Sprite, sf::Sprite &ball2Sprite, sf::Sprite &ball3Sprite, int LIVES, vector<sf::Sprite> &vectorCookie, 
-		vector<sf::Sprite> &vectorPitchfork, int numPitchfork)
+		vector<sf::Sprite> &vectorFire, int numFire)
 {
 	window.clear();	//set screen to black
 	
@@ -111,9 +113,9 @@ void draw(sf::RenderWindow& window, sf::Sprite& charizardSprite, vector<sf::Spri
 		window.draw(vectorCookie[counter]);
 	}
 
-	for (size_t counter = 0; counter < vectorPitchfork.size(); counter++)
+	for (size_t counter = 0; counter < vectorFire.size(); counter++)
 	{
-		window.draw(vectorPitchfork[counter]);
+		window.draw(vectorFire[counter]);
 	}
 
 	for (size_t counter = 0; counter < vectorDg.size(); counter++)
@@ -151,6 +153,8 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(1000, 800), "Cookie Game");
 	window.setVerticalSyncEnabled(true);
 
+	//event : all users input (a union), one input per line
+	sf::Event event;		
 
 	//Charizard 
 	sf::Texture charizardTexture;
@@ -165,36 +169,36 @@ int main()
 	sf::Sprite cookieSprite(cookieTexture);
 	cookieSprite.setScale(1, 1);
 
-	/* Pitchfork */
-	sf::Texture pitchforkTexture;
-	pitchforkTexture.loadFromFile(resourcePath() + "assets/pitchfork.png");
-	if (!pitchforkTexture.loadFromFile((resourcePath() + "assets/pitchfork.png")))
+	/* Fire ball (100 x 100)*/
+	sf::Texture fireTexture;
+	fireTexture.loadFromFile(resourcePath() + "assets/Fireball.png");
+	if (!fireTexture.loadFromFile((resourcePath() + "assets/Fireball.png")))
 	{
-		cout << "\nCan't load pitchfork texture into this program :(";
+		cout << "\nCan't load fireball.png into this program :(";
 		return -1;				//stop program
+		system("pause");
 	}
-	sf::Sprite pitchforkSprite(pitchforkTexture);
-	pitchforkSprite.setScale(0.5, 0.5);
-	pitchforkSprite.setRotation(150);
-	pitchforkSprite.setOrigin(100, 100);
-	vector<sf::Sprite> vectorPitchfork;
+	sf::Sprite fireSprite(fireTexture);
+	fireSprite.setScale(2, 2);
+	fireSprite.setOrigin(50, 50);
+	vector<sf::Sprite> vectorFire;
 
-
-	for (int count = 0; count < numPitchfork; count++)
+	for (int count = 0; count < numFire; count++)
 	{
-		vectorPitchfork.push_back(pitchforkSprite);
-		vectorPitchfork[count].setPosition(rand() % (800 - 100), 100);
+		vectorFire.push_back(fireSprite);
+		vectorFire[count].setPosition(rand() % (LENGTHWINDOW - 100), 100);
 	}
-	//check if two pitchforkSprite is overlap
-	for (int count = 0; count < numPitchfork; count++)
+
+	//check if two fireball overlap
+	for (int count = 0; count < numFire; count++)
 	{
-		sf::Vector2f position1 = vectorPitchfork[count].getPosition();			//position of pitchforkSprite[0]
-		for (int counter = 1; counter < numPitchfork - 1; counter++)
+		//sf::Vector2f position1 = vectorFire[count].getPosition();			//position of fireball[0]
+		for (int counter = 1; counter < numFire - 1; counter++)
 		{
-			sf::Vector2f position2 = vectorPitchfork[count].getPosition();
-			if (overlap(vectorPitchfork[count], vectorPitchfork[counter]))
+			//sf::Vector2f position2 = vectorFire[count].getPosition();
+			if (overlap(vectorFire[count], vectorFire[counter]))
 			{
-				vectorPitchfork[counter].setPosition(rand() % (800 - 100) , 100);
+				vectorFire[counter].setPosition(rand() % (LENGTHWINDOW - 100) , 100);
 			}
 		}
 
@@ -276,18 +280,18 @@ int main()
 
 			for (int count = 0; count < numOfCookie; count++)
 			{
-				if (!overlap(charizardSprite, vectorCookie[count]) && !overlap (charizardSprite, vectorPitchfork[count]) && LIVES != 0)		//call this, before the first frame is drawn, it is false
+				if (!overlap(charizardSprite, vectorCookie[count]) && !overlap (charizardSprite, vectorFire[count]) && LIVES != 0)		//call this, before the first frame is drawn, it is false
 				{
-					update(charizardSprite, dgSprite, window, vectorDg, numOfDg, score, vectorCookie, numOfCookie, vectorPitchfork, numPitchfork, LIVES);
+					update(charizardSprite, dgSprite, window, event, vectorDg, numOfDg, score, vectorCookie, numOfCookie, vectorFire, numFire, LIVES);
 					updatePokeball(x, ball1Sprite, ball2Sprite, ball3Sprite);
-					draw(window, charizardSprite, vectorDg, ball1Sprite, ball2Sprite, ball3Sprite, LIVES, vectorCookie, vectorPitchfork, numPitchfork);
+					draw(window, charizardSprite, vectorDg, ball1Sprite, ball2Sprite, ball3Sprite, LIVES, vectorCookie, vectorFire, numFire);
 				}
 
-				else if (overlap(charizardSprite, vectorCookie[count]) || overlap(charizardSprite, vectorPitchfork[count]) && LIVES != 0)
+				else if (overlap(charizardSprite, vectorCookie[count]) || overlap(charizardSprite, vectorFire[count]) && LIVES != 0)
 				{
-					update(charizardSprite, dgSprite, window, vectorDg, numOfDg, score, vectorCookie, numOfCookie, vectorPitchfork, numPitchfork, LIVES);
+					update(charizardSprite, dgSprite, window, event, vectorDg, numOfDg, score, vectorCookie, numOfCookie, vectorFire, numFire, LIVES);
 					updatePokeball(x, ball1Sprite, ball2Sprite, ball3Sprite);
-					draw(window, charizardSprite, vectorDg, ball1Sprite, ball2Sprite, ball3Sprite, LIVES, vectorCookie, vectorPitchfork, numPitchfork);
+					draw(window, charizardSprite, vectorDg, ball1Sprite, ball2Sprite, ball3Sprite, LIVES, vectorCookie, vectorFire, numFire);
 					LIVES -= 1;
 					resetCookie(vectorCookie[count], numOfCookie);
 
