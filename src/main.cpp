@@ -162,6 +162,17 @@ int main()
 	sf::Sprite charizardSprite(charizardTexture);
 	charizardSprite.setPosition(LENGTHWINDOW, WIDTHWINDOW / 2.0);
 
+	//Pikachu
+	sf::Texture pikaTexture;
+	pikaTexture.loadFromFile(resourcePath() + "assets/pikachu.png");
+	sf::Sprite pikaSprite(pikaTexture);
+	if (!pikaTexture.loadFromFile((resourcePath() + "assets/pikachu.png")))
+	{
+		cout << "\nCan't load pikachu.png into this program :(";
+		return -1;				//stop program
+		system("pause");
+	}
+
 	/* Cookie*/
 
 	sf::Texture cookieTexture;

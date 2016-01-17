@@ -148,6 +148,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\src\Choose-Main-Character.cpp" />
     <ClCompile Include="..\..\src\Cookie.cpp" />
     <ClCompile Include="..\..\src\GameOver.cpp" />
     <ClCompile Include="..\..\src\HowTo.cpp" />
@@ -160,6 +161,7 @@
     <ClCompile Include="..\..\src\Charizard.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\src\Choose-Main-Character.h" />
     <ClInclude Include="..\..\src\Cookie.h" />
     <ClInclude Include="..\..\src\GameOver.h" />
     <ClInclude Include="..\..\src\Event.h" />

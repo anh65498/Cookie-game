@@ -31,6 +31,9 @@
     <ClCompile Include="..\..\src\HowTo.cpp">
       <Filter>Source File</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\Choose-Main-Character.cpp">
+      <Filter>Source File</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\Overlap.h">
@@ -61,6 +64,9 @@
       <Filter>Header File</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\HowTo.h">
+      <Filter>Header File</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Choose-Main-Character.h">
       <Filter>Header File</Filter>
     </ClInclude>
   </ItemGroup>
