@@ -5,7 +5,7 @@
 #include <sstream>
 #include <vector>
 
-#include "main.h"					//contain prototype of enum GAME_STATE, so when file compile, they have prototype in  -> link all file 
+#include "main.h"					//contain prototype of enum GAME_STATE, so when file compile, they have prototype in  -> link all file
 #include "ResourcePath.h"
 #include "Overlap.h"
 #include "OpeningScreen.h"
@@ -19,10 +19,13 @@
 using namespace std;				//don't need to write std:: anymore
 									/** I changed the original size of the window from 800,600 to 1000, 800 */
 
-void resetCookie(sf::Sprite &cookieSprite, int numOfCookie);
+void resetCookie(sf::Sprite &cookieSprite, int numOfCookie) {
+	for (int count = 0; count < numOfCookie; count++)
+		cookieSprite.setPosition(700, rand() % 500);
+}
 
 void update(sf::Sprite& charizardSprite, sf::Sprite &dgSprite, sf::RenderWindow &window, sf::Event &event, vector<sf::Sprite> &vectorDg, int &numOfDg,
-					int &score, vector<sf::Sprite> &vectorCookie, int numOfCookie, vector<sf::Sprite> &vectorFire, int numFire, int &LIVES) 
+					int &score, vector<sf::Sprite> &vectorCookie, int numOfCookie, vector<sf::Sprite> &vectorFire, int numFire, int &LIVES)
 {
 	//move cookie and reset position
 	for (int counter = 0; counter < numOfCookie; counter++)
@@ -30,14 +33,14 @@ void update(sf::Sprite& charizardSprite, sf::Sprite &dgSprite, sf::RenderWindow 
 		vectorCookie[counter].move(-5, 0);
 		sf::Vector2f position;
 		position = vectorCookie[counter].getPosition();
-		
+
 		//cout << "The position of cookie " << counter + 1 << " : " << position.x << "         " << position.y <<endl;
-		
+
 		if (position.x < -50)
 		{
 			vectorCookie[counter].setPosition(700, rand() % 500);
 		}
-	
+
 	}
 
 	//Move fire and reset position
@@ -46,7 +49,7 @@ void update(sf::Sprite& charizardSprite, sf::Sprite &dgSprite, sf::RenderWindow 
 		vectorFire[count].move(0, 5);
 		sf::Vector2f posFire;
 		posFire = vectorFire[count].getPosition();
-				
+
 		//cout << "The position of Fire " << count + 1 << " : " << posFire.x << "         " << posPitchfork.y << endl;
 		if (posFire.y > 600)
 		{
@@ -54,14 +57,14 @@ void update(sf::Sprite& charizardSprite, sf::Sprite &dgSprite, sf::RenderWindow 
 		}
 	}
 		//check if any fire collide (2 images on top of each other), then regenerate new pitchfork at new location
-	
-	
-	
+
+
+
 	//Move charizard
 	sf::Vector2f charizardPosition;
 	charizardMove(charizardSprite, charizardPosition);								//inside Charizard.h
 
-																		
+
 	//DG shooting
 	window.setKeyRepeatEnabled(false);
 
@@ -71,13 +74,13 @@ void update(sf::Sprite& charizardSprite, sf::Sprite &dgSprite, sf::RenderWindow 
 			vectorDg.push_back(dgSprite);
 			vectorDg[numOfDg].setOrigin((charizardPosition.x) + 32.0, (charizardPosition.y) + 32.0);
 			vectorDg[numOfDg].setPosition((charizardPosition.x) + 32.0, (charizardPosition.y) + 32.0);
-		}	
+		}
 	}
 
 
 	for (int counter = 0; counter < vectorDg.size(); counter++)
-		vectorDg[counter].move(5, 0); 
-	
+		vectorDg[counter].move(5, 0);
+
 	//if CookieSprite overlap with dgSprite, reset position of cookieSprite
 	for (int i = 0; i < vectorCookie.size(); i++)
 	{
@@ -103,11 +106,11 @@ void update(sf::Sprite& charizardSprite, sf::Sprite &dgSprite, sf::RenderWindow 
 }
 
 void draw(sf::RenderWindow& window, sf::Sprite& charizardSprite, vector<sf::Sprite> &vectorDg,
-		sf::Sprite &ball1Sprite, sf::Sprite &ball2Sprite, sf::Sprite &ball3Sprite, int LIVES, vector<sf::Sprite> &vectorCookie, 
+		sf::Sprite &ball1Sprite, sf::Sprite &ball2Sprite, sf::Sprite &ball3Sprite, int LIVES, vector<sf::Sprite> &vectorCookie,
 		vector<sf::Sprite> &vectorFire, int numFire)
 {
 	window.clear();	//set screen to black
-	
+
 	for (size_t counter = 0; counter < vectorCookie.size(); counter++)
 	{
 		window.draw(vectorCookie[counter]);
@@ -140,7 +143,7 @@ void draw(sf::RenderWindow& window, sf::Sprite& charizardSprite, vector<sf::Spri
 
 
 	window.draw(charizardSprite);
-	
+
 	window.display();
 }
 
@@ -154,9 +157,9 @@ int main()
 	window.setVerticalSyncEnabled(true);
 
 	//event : all users input (a union), one input per line
-	sf::Event event;		
+	sf::Event event;
 
-	//Charizard 
+	//Charizard
 	sf::Texture charizardTexture;
 	charizardTexture.loadFromFile(resourcePath() + "assets/charizard.png");
 	sf::Sprite charizardSprite(charizardTexture);
@@ -253,22 +256,18 @@ int main()
 	int score = 0;
 	int LIVES = 0;
 
+    //create a vector of Cookie and set each element's position
 	vector <sf::Sprite> vectorCookie;				/** vector of cookies to print multiple cookies on window while playing **/
-
-
-	for (int counter = 0; counter < numOfCookie; counter++)
-	{
+	for (int counter = 0; counter < numOfCookie; counter++){
 		vectorCookie.push_back(cookieSprite);
 		vectorCookie[counter].setPosition(800, rand() % (600 - 64));
 	}
 
 	GAME_STATE state = OPENING_SCREEN;
-	
-	
+
+	//control managers
 	while (window.isOpen())
 	{
-
-
 		handleEvent(window);					//inside event.h
 		switch (state)
 		{
@@ -277,7 +276,7 @@ int main()
 			if ((sf::Keyboard::isKeyPressed(sf::Keyboard::S)))
 				state = HOWTO_SCREEN;
 			break;
-		
+
 		case HOWTO_SCREEN:
 			HowToScreen(window, state, LIVES);
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::B))
@@ -306,7 +305,7 @@ int main()
 					LIVES -= 1;
 					resetCookie(vectorCookie[count], numOfCookie);
 
-				}	//end of overlap 
+				}	//end of overlap
 
 				else if (LIVES == 0)
 					state = ENDING_GAME;
@@ -318,18 +317,21 @@ int main()
 				drawGameOverText(window, score);
 			//end of for loop counting numOfCookie
 
-			if ((sf::Keyboard::isKeyPressed(sf::Keyboard::A)))
+			if ((sf::Keyboard::isKeyPressed(sf::Keyboard::A))) {
 				LIVES = 3;
+				score = 0;
 				state = DURING_GAME;
+			}
+				
 			break;
 
-		}						//end of switch(state)		
+		}						//end of switch(state)
 
 	}					//end of while window is open
-					
-						
+
+
 	int Quitdecision = 0;
-	
+
 	do
 	{
 		cout << "Final score" << score;
@@ -339,21 +341,10 @@ int main()
 
 	return 0;
 }
-
-void resetCookie(sf::Sprite &cookieSprite, int numOfCookie)
-{
-	for (int count = 0; count < numOfCookie ; count++)
-	{
-		
-		cookieSprite.setPosition(700, rand() % 500);
-
-	}
-}
-
 /*
 1) forgot ampersand in function declaration
 2) Created a sprite (pitchfork) and update it then don't draw it, but thought something is wrong with the png
-3) Remember draw() but forget to display      
+3) Remember draw() but forget to display
 4) problem with string at howTo screen, can't seem to setposition for instruction2 although I can setPosition for other string. Turns out, I mistook intruction2.setPosition
 for instruction1.setPosition
 
